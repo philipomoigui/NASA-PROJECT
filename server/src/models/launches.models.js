@@ -6,13 +6,30 @@ const launch = {
     rocket: 'Explorer IS1',
     launchDate: new Date('December 30, 2030'),
     destination: 'Kepler-442 b',
-    customer: ['NASA', 'Bill'],
+    customers: ['NASA', 'Bill'],
     upcoming: true,
     success: true
 }
 
+let latestFlightNumber = launch.flightNumber;
+
 launches.set(launch.flightNumber, launch);
 
+function getAllLaunches() {
+    return [...launches.values()];
+}
+
+function addNewLaunch(launch){
+    latestFlightNumber++;
+    launches.set(latestFlightNumber, Object.assign(launch, {
+        flightNumber: latestFlightNumber,
+        success: true,
+        upcoming: true,
+        customers: ['Bill Gate', 'Shev Junkle']
+    }))
+}
+
 module.exports = {
-    launches,
+    getAllLaunches,
+    addNewLaunch
 }
