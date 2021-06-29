@@ -8,11 +8,29 @@ function httpGetAllLaunches(req, res) {
 }
 
 function httpAddNewLAunch(req, res) {
-    var launch = req.body;
+    const launch = req.body;
+
+    console.log(launch.launchDate);
+    console.log(launch.rocket);
+    console.log(launch.target);
+    console.log(launch.mission);
+
+    if (!launch.mission || !launch.rocket || !launch.target || !launch.launchDate) {
+        return res.status(400).json({
+            error: 'Missing required launch parameters'
+        });
+    }
+
     launch.launchDate = new Date(launch.launchDate);
 
+    if (isNaN(launch.launchDate)) { 
+        return res.status(400).json({
+            error: 'Invalid Launch Date'
+        })
+    }
+
     addNewLaunch(launch);
-    res.status(200).json(launch);
+    return res.status(201).json(launch);
 }
 
 module.exports = {
