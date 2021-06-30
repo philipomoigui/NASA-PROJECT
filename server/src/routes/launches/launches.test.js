@@ -11,6 +11,7 @@ describe('Test GET /Launches', () => {
 });
 
 describe('Test POST /Launches', () => {
+
     const completeLaunchData = {
         mission: 'Nefro Exploration 9',
         rocket: 'Nitinghale LFS2 Cruiser',
@@ -21,6 +22,13 @@ describe('Test POST /Launches', () => {
     const launchDataWithoutDate = {
         mission: 'Nefro Exploration 9',
         rocket: 'Nitinghale LFS2 Cruiser',
+        target: 'Kepler-186 f'
+    };
+
+    const launchDataWIthInvalidDate = {
+        mission: 'Nefro Exploration 9',
+        rocket: 'Nitinghale LFS2 Cruiser',
+        launchDate: 'Hello',
         target: 'Kepler-186 f'
     };
 
@@ -39,6 +47,26 @@ describe('Test POST /Launches', () => {
         expect(response.body).toMatchObject(launchDataWithoutDate);
     });
 
-    test('It should catch all missing parameters', () => {});
-    test('It should catch Invalid dates', () => {});
+    test('It should catch missing parameters', async () => {
+        const response = await request(app)
+        .post('/launches')
+        .send(launchDataWithoutDate)
+        .expect('Content-Type', /json/)
+        .expect(400);
+
+        expect(response.body).toStrictEqual({
+            error: 'Missing required launch parameters'
+        })
+    });
+    test('It should catch Invalid dates', async () => {
+        const response = await request(app)
+        .post('/launches')
+        .send(launchDataWIthInvalidDate)
+        .expect('Content-Type', /json/)
+        .expect(400);
+
+        expect(response.body).toStrictEqual({
+            error: 'Invalid Launch Date'
+        })
+    });
 });
