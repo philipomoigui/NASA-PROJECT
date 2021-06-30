@@ -22,7 +22,7 @@ async function httpSubmitLaunch(launch) {
      headers: {
        "Content-Type": "application/json"
      },
-     data: JSON.stringify(launch)
+     body: JSON.stringify(launch)
    })
  } catch (err) {
    return {
@@ -32,9 +32,18 @@ async function httpSubmitLaunch(launch) {
   // Submit given launch data to launch system.
 }
 
+// Delete launch with given ID
 async function httpAbortLaunch(id) {
-  // TODO: Once API is ready.
-  // Delete launch with given ID.
+  try {
+    return await fetch(`${API_URL}/launches/${id}`, {
+      method: "delete",
+    })
+  } catch (error) {
+    console.log(error);
+    return {
+      ok: false
+    }
+  }
 }
 
 export {
