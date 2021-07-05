@@ -16,3 +16,7 @@ async function startServer() {
 }
 
 startServer();
+
+// fPlHc1yRT8qf0jH9
+
+// mongodb+srv://nasa-api:fPlHc1yRT8qf0jH9@nasa.gg0za.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
