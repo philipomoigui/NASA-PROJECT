@@ -1,4 +1,7 @@
-const launches =  new Map();
+const launchesDatabase = require('./launches.mongo');
+const planets = require('./planets.mongo');
+
+const DEFAULT_FLIGHT_NUMBER = 100;
 
 const launch = {
     flightNumber: 100,
@@ -11,26 +14,58 @@ const launch = {
     success: true
 }
 
-let latestFlightNumber = launch.flightNumber;
-
-launches.set(launch.flightNumber, launch);
+saveLaunch(launch);
 
 function existsLaunchWithId (launchId) {
     return launches.has(launchId);
 }
 
-function getAllLaunches() {
-    return [...launches.values()];
+async function getLatestFlightNumber () {
+    const latestLaunch = await launchesDatabase
+    .findOne()
+    .sort('-flightNumber');
+
+    if (!launch) {
+        return DEFAULT_FLIGHT_NUMBER;
+    }
+
+    return latestLaunch.flightNumber;
 }
 
-function addNewLaunch(launch){
-    latestFlightNumber++;
-    launches.set(latestFlightNumber, Object.assign(launch, {
-        flightNumber: latestFlightNumber,
+async function getAllLaunches() {
+    return await launchesDatabase.find({}, {
+        '_id': 0, '__v': 0
+    })
+}
+
+async function saveLaunch(launch) {
+
+    const planet = await planets.findOne({
+        keplerName: launch.target
+    });
+
+    if (!planet) {
+        throw new Error('No Matching Planet Found');
+    }
+
+    await launchesDatabase.findOneAndUpdate({
+        flightNumber: launch.flightNumber
+    }, launch, {
+        upsert: true
+    });
+}
+
+async function scheduleNewLaunch(launch) {
+    const newFlightNumber = await getLatestFlightNumber() + 1;
+
+    Object.assign(launch, {
+        flightNumber: newFlightNumber,
         success: true,
         upcoming: true,
-        customers: ['Bill Gate', 'Shev Junkle']
-    }))
+        customers: ['Bill Gate', 'Shev Junkie']
+    });
+
+    await saveLaunch(launch);
 }
 
 function abortLaunchById(launchId) {
@@ -45,6 +80,6 @@ function abortLaunchById(launchId) {
 module.exports = {
     existsLaunchWithId,
     getAllLaunches,
-    addNewLaunch,
+    scheduleNewLaunch,
     abortLaunchById
 }
