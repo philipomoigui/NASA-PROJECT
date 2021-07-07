@@ -6,10 +6,14 @@
   "scripts": {
     "test": "jest",
     "watch-test": "jest --watch",
-    "start": "nodemon src/server.js"
+    "start": "nodemon src/server.js",
+    "cluster": "pm2 start src/server.js -i max"
   },
   "author": "",
   "license": "ISC",
+  "jest": {
+    "testEnvironment": "node"
+  },
   "devDependencies": {
     "jest": "^27.0.6",
     "nodemon": "^2.0.7",
