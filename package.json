@@ -4,9 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "install-client": "npm install --prefix client",
+    "install-server": "npm install --prefix server",
     "server": "npm start --prefix server",
     "client": "npm start --prefix client",
-    "install": "npm install --prefix server && npm install --prefix client",
+    "install": "npm install install-server && npm install install-client",
     "watch": "npm-run-all -p server client",
     "deploy": "npm run build --prefix client && npm run server",
     "deploy-cluster": "npm run build --prefix client && npm run cluster --prefix server",
