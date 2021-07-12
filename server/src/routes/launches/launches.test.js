@@ -19,6 +19,7 @@ describe('Launches API', () => {
 
     afterAll(async () => {
         await mongoDisconnect();
+        //await new Promise(resolve => setTimeout(() => resolve(), 500)); // avoid jest open handle error
     });
 
     describe('Test GET /Launches', () => {
