@@ -83,7 +83,7 @@ async function getLatestFlightNumber () {
     .findOne()
     .sort('-flightNumber');
 
-    if (!launch) {
+    if (!latestLaunch) {
         return DEFAULT_FLIGHT_NUMBER;
     }
 

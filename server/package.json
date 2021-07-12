@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest --detectOpenHandles",
     "watch-test": "jest --watch",
-    "start": "nodemon src/server.js",
+    "start-watch": "nodemon src/server.js",
+    "start": "node src/server.js",
     "cluster": "pm2 start src/server.js -i max"
   },
   "author": "",
@@ -25,6 +26,7 @@
     "csv-parse": "^4.16.0",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "mongoose": "^5.13.2",
     "morgan": "^1.10.0",
     "pm2": "^5.1.0"
   }
